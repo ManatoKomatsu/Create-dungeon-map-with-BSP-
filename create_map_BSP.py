@@ -1,7 +1,7 @@
 import random
 
 
-class Leef:
+class Leaf:
     MIN_LEAF_SIZE = 6  # 最小の分割サイズ
 
     def __init__(self, x: int, y: int, width: int, height: int):
@@ -46,3 +46,31 @@ class Leef:
                 self.x + split, self.y, self.width - split, self.height)
 
         return True  # 分割に成功
+
+
+# ダンジョン生成の開始
+MAX_LEAF_SIZE = 20
+_leafs = []  # Leafのリスト
+
+# _sprMapの幅と高さを仮定
+spr_map_width = 30  # 例: マップの幅
+spr_map_height = 30  # 例: マップの高さ
+
+# ルートとなるLeafを作成し、_leafsリストに追加
+root = Leaf(0, 0, spr_map_width, spr_map_height)
+_leafs.append(root)
+
+did_split = True
+
+# すべてのLeafが分割できなくなるまで繰り返し
+while did_split:
+    did_split = False
+    for l in _leafs[:]:  # リストのコピーを使用して分割中にループを安全に行う
+        if l.left_child is None and l.right_child is None:  # すでに分割されていないLeafである場合
+            # Leafが大きすぎるか、ランダムに75%の確率で分割
+            if l.width > MAX_LEAF_SIZE or l.height > MAX_LEAF_SIZE or random.random() > 0.25:
+                if l.split():  # Leafを分割
+                    # 分割が成功した場合、子Leafをリストに追加
+                    _leafs.append(l.left_child)
+                    _leafs.append(l.right_child)
+                    did_split = True
