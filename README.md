@@ -15,7 +15,7 @@
 6. [Author](#Author)
 
 
-## プロジェクト名
+## Project name
 
 Create dungeon map with BSP
 
