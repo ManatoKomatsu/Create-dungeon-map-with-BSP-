@@ -47,6 +47,21 @@ class Leaf:
 
         return True  # 分割に成功
 
+    def create_rooms(self):
+        if self.left_child is not None or self.right_child is not None:
+            if self.left_child is not None or self.right_child is not None:
+                if self.left_child is not None:
+                    self.left_child.create_rooms()
+                if self.right_child is not None:
+                    self.right_child.create_rooms()
+            else:
+                room_width = random.randint(3, self.width - 2)
+                room_height = random.randint(3, self.height - 2)
+                room_x = random.randint(1, self.width - room_width - 1)
+                room_y = random.randint(1, self.width - room_width - 1)
+                self.room = (self.x + room_x, self.y +
+                             room_y, room_width, room_height)
+
 
 # ダンジョン生成の開始
 MAX_LEAF_SIZE = 20
@@ -74,3 +89,6 @@ while did_split:
                     _leafs.append(l.left_child)
                     _leafs.append(l.right_child)
                     did_split = True
+
+
+root.create_rooms()
